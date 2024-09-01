@@ -276,7 +276,7 @@
               <label class="form-check-label" for="termsConditions">Accept all terms & conditions and make payment</label>
               <small id="termsConditionsError" class="form-text text-danger" style="display:none;">Please accept the terms and conditions.</small>
             </div>
-            <button type="submit" class="btn btn-success">Make Payment</button>
+            <button type="button" class="btn btn-secondary" onclick="downloadPDF()">Download PDF</button>
           </div>
         </form>
         
@@ -411,6 +411,40 @@ document.getElementById('trekkersNumber').addEventListener('input', function() {
 
 </script>
 
+
+
+<!-- Script to download form -->
+<script>
+
+  function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Get form data
+    const fullName = document.getElementById('fullName').value;
+    const mobileNumber = document.getElementById('mobileNumber').value;
+    const emailAddress = document.getElementById('emailAddress').value;
+    const selectDate = document.getElementById('selectDate').value;
+    const pickupPoint = document.getElementById('pickupPoint').value;
+    const trekkersNumber = document.getElementById('trekkersNumber').value;
+    const totalPayment = document.getElementById('totalPayment').value;
+
+    // Add content to PDF
+    doc.setFontSize(14);
+    doc.text("Booking Form Details", 10, 10);
+    doc.setFontSize(12);
+    doc.text(`Full Name: ${fullName}`, 10, 20);
+    doc.text(`Mobile Number: ${mobileNumber}`, 10, 30);
+    doc.text(`Email Address: ${emailAddress}`, 10, 40);
+    doc.text(`Date: ${selectDate}`, 10, 50);
+    doc.text(`Pickup Point: ${pickupPoint}`, 10, 60);
+    doc.text(`Number of Trekkers: ${trekkersNumber}`, 10, 70);
+    doc.text(`Total Payment: ${totalPayment}`, 10, 80);
+
+    // Save the PDF
+    doc.save('BookingForm.pdf');
+  }
+</script>
 <!-- END FORM  -->
 
 <footer class="ftco-footer ftco-bg-light ftco-section">

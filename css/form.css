@@ -1,0 +1,17 @@
+.booking-summary {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+.booking-summary h2 {
+    margin-bottom: 20px;
+}
+.form-control {
+    margin-bottom: 15px;
+}
+.form-group label {
+    font-weight: bold;
+}

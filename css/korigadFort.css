@@ -1,0 +1,160 @@
+.ftco-section{
+    margin: 10px;
+    padding: 1px;
+}
+.card {
+ width: 15rem;
+ border-radius: 20px;
+ overflow: hidden;
+ box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ z-index: 1;
+}
+
+.button {
+    background-color: white;
+    border: hidden;
+}
+/* Custom styles for the Book Now button */
+.book-now {
+    background-color: #007bff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-weight: bold;
+  }
+  
+  .sticky-top {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 20px;
+  }
+  
+  /* Media queries for responsive design */
+  @media (max-width: 992px) {
+    .card {
+      margin-bottom: 20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .nav-pills .nav-link {
+      font-size: 14px;
+      padding: 10px;
+    }
+  
+    .card-title {
+      font-size: 18px;
+    }
+  
+    .card-text {
+      font-size: 16px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .hero-wrap {
+      height: 50vh;
+      background-position: center;
+    }
+  
+    .sticky-top {
+      position: static;
+      margin-bottom: 20px;
+    }
+  
+    .card-title {
+      font-size: 16px;
+    }
+  
+    .card-text {
+      font-size: 14px;
+    }
+  }
+
+    /*form  */
+  /* General Form Styling */
+/* General Form Styling */
+#bookingForm {
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Input Fields */
+#bookingForm .form-control {
+  border-radius: 5px;
+  border: 1px solid #ced4da;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+/* Step Buttons */
+#bookingForm .btn-primary, #bookingForm .btn-success {
+  border-radius: 20px;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+}
+
+#bookingForm .btn-primary:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+#bookingForm .btn-success:hover {
+  background-color: #28a745;
+  color: #fff;
+}
+
+/* Terms and Conditions */
+#bookingForm .form-check-label {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+/* Total Payment */
+#totalPayment {
+  font-weight: bold;
+  color: #28a745;
+  font-size: 18px;
+}
+
+/* Hide step 2 initially */
+#step2 {
+  display: none;
+}
+
+
+/* To change treakers number */
+/* Number Controls */
+.number-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.number-controls .form-control {
+  text-align: center;
+  width: 60px;
+  margin: 0;
+  padding: 10px;
+}
+
+.number-controls .number-btn {
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font-size: 20px;
+  text-align: center;
+}
+
+.number-controls .number-btn:first-of-type {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.number-controls .number-btn:last-of-type {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}

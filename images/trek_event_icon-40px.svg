@@ -1,0 +1,12 @@
+<svg id="Group_30" data-name="Group 30" xmlns="http://www.w3.org/2000/svg" width="41" height="41" viewBox="0 0 41 41">
+  <rect id="Rectangle_7" data-name="Rectangle 7" width="41" height="40.468" fill="none"/>
+  <g id="man-with-bag-and-walking-stick" transform="translate(4.537 0.076)">
+    <circle id="Ellipse_1" data-name="Ellipse 1" cx="3.819" cy="3.819" r="3.819" transform="translate(12.963 0)"/>
+    <path id="Path_9" data-name="Path 9" d="M12.107,7.028c.142-.969.894-1.552,1.443-1.4L17.534,6.74c.547.156.736,1.428.581,1.98L14.833,22.2c-.161.554-.491.828-1.04.67L11.1,22.287C8.931,20.5,8.944,18.948,9.389,16.8Z" transform="translate(-0.631 3.221)"/>
+    <path id="Path_10" data-name="Path 10" d="M10.629,16.109l-.683,4.774S8.19,25.055,6.982,27.505c-.913,1.856-1.343,3.194-.715,3.529.963.512,2.257-.636,3.613-2.75,2.273-3.545,3.444-5.318,3.882-6.18l.688-2.251S11.074,17.621,10.629,16.109Z" transform="translate(-2.627 9.296)"/>
+    <path id="Path_11" data-name="Path 11" d="M20.207,19.515l-5.318-5.281c-.839-.845-2.092-.448-2.94.393S9.443,16.25,10.279,17.1l6.764,5.695-.749,7.3c-.055,1.8.052,2.843,1.195,2.963,1.068.111,1.538-2.109,1.649-2.671,0,0,1.367-6.99,1.533-7.975A3.275,3.275,0,0,0,20.207,19.515Z" transform="translate(-0.068 7.865)"/>
+    <path id="Path_12" data-name="Path 12" d="M24.865,8.423l-4.009,1.885L15.805,6.621a1.8,1.8,0,1,0-2.1,2.916l5.447,3.945a2.059,2.059,0,0,0,1.876.312s3.74-2.272,4.743-2.926c1.051-.689,2.151-1.594,1.745-2.354C26.936,7.423,25.886,7.93,24.865,8.423Z" transform="translate(1.766 3.673)"/>
+    <line id="Line_2" data-name="Line 2" y2="30.331" transform="translate(26.496 9.729)" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.142"/>
+    <path id="Path_13" data-name="Path 13" d="M13.437,7.227s-2.389,7.416-2.752,8.595-1.626,2-3.412,1.452-3.639-1.295-3.349-3.381C4.242,11.619,6.389,8.6,8.252,6.658S14.369,4.044,13.437,7.227Z" transform="translate(-3.894 2.915)"/>
+  </g>
+</svg>

@@ -1,0 +1,20 @@
+.whatsapp-link {
+    text-decoration: none;
+    color: white; /* Default text color */
+}
+
+.whatsapp-icon {
+    font-size: 24px;
+    margin-right: 8px;
+    color: white; /* Default icon color */
+}
+
+.whatsapp-link span {
+    color: white; /* Default text color */
+}
+
+/* Hover effect to change text color to #f85959 */
+.whatsapp-link:hover span,
+.whatsapp-link:hover .whatsapp-icon {
+    color: #f85959;
+}

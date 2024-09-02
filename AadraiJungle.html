@@ -30,6 +30,7 @@
 
 
 	  <link rel="stylesheet" href="css/korigadFort.css">
+    
   </head>
   <body>
     
@@ -221,7 +222,7 @@
       </div>
       <div class="modal-body">
         <!-- Multi-step form -->
-        <form id="bookingForm" onsubmit="return validateForm()">
+        <form id="bookingForm" action="send_email.php" onsubmit="return validateForm()">
           <!-- Step 1 -->
           <div id="step1">
             <div class="form-group">
@@ -276,7 +277,7 @@
               <label class="form-check-label" for="termsConditions">Accept all terms & conditions and make payment</label>
               <small id="termsConditionsError" class="form-text text-danger" style="display:none;">Please accept the terms and conditions.</small>
             </div>
-            <button type="button" class="btn btn-secondary" onclick="downloadPDF()">Download PDF</button>
+            <button type="button" class="btn btn-secondary" onclick="sendEmailAndDownloadPDF()">Download PDF</button>
           </div>
         </form>
         
@@ -411,40 +412,59 @@ document.getElementById('trekkersNumber').addEventListener('input', function() {
 
 </script>
 
-
-
 <!-- Script to download form -->
 <script>
 
-  function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+function sendEmailAndDownloadPDF() {
+  // Collect form data
+  const formData = new FormData();
+  formData.append('fullName', document.getElementById('fullName').value);
+  formData.append('mobileNumber', document.getElementById('mobileNumber').value);
+  formData.append('emailAddress', document.getElementById('emailAddress').value);
+  formData.append('selectDate', document.getElementById('selectDate').value);
+  formData.append('pickupPoint', document.getElementById('pickupPoint').value);
+  formData.append('trekkersNumber', document.getElementById('trekkersNumber').value);
+  
+  // Send data to the server
+  fetch('send_email.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.text())
+  .then(result => {
+    console.log('Email sent:', result);
+    // After email is sent, download the PDF
+    generatePDF();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
 
-    // Get form data
-    const fullName = document.getElementById('fullName').value;
-    const mobileNumber = document.getElementById('mobileNumber').value;
-    const emailAddress = document.getElementById('emailAddress').value;
-    const selectDate = document.getElementById('selectDate').value;
-    const pickupPoint = document.getElementById('pickupPoint').value;
-    const trekkersNumber = document.getElementById('trekkersNumber').value;
-    const totalPayment = document.getElementById('totalPayment').value;
+function generatePDF() {
+  const { jsPDF } = window.jspdf;
 
-    // Add content to PDF
-    doc.setFontSize(14);
-    doc.text("Booking Form Details", 10, 10);
-    doc.setFontSize(12);
-    doc.text(`Full Name: ${fullName}`, 10, 20);
-    doc.text(`Mobile Number: ${mobileNumber}`, 10, 30);
-    doc.text(`Email Address: ${emailAddress}`, 10, 40);
-    doc.text(`Date: ${selectDate}`, 10, 50);
-    doc.text(`Pickup Point: ${pickupPoint}`, 10, 60);
-    doc.text(`Number of Trekkers: ${trekkersNumber}`, 10, 70);
-    doc.text(`Total Payment: ${totalPayment}`, 10, 80);
+  const doc = new jsPDF();
+  
+  // Add form data to the PDF
+  doc.text(`Full Name: ${document.getElementById('fullName').value}`, 10, 10);
+  doc.text(`Mobile Number: ${document.getElementById('mobileNumber').value}`, 10, 20);
+  doc.text(`Email Address: ${document.getElementById('emailAddress').value}`, 10, 30);
+  doc.text(`Select Date: ${document.getElementById('selectDate').value}`, 10, 40);
+  doc.text(`Pickup Point: ${document.getElementById('pickupPoint').value}`, 10, 50);
+  doc.text(`Number of Trekkers: ${document.getElementById('trekkersNumber').value}`, 10, 60);
 
-    // Save the PDF
-    doc.save('BookingForm.pdf');
-  }
+  // Add more fields as necessary
+
+  // Trigger download of PDF
+  doc.save('BookingDetails.pdf');
+}
+
 </script>
+
+    <!-- Include jsPDF from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
 <!-- END FORM  -->
 
 <footer class="ftco-footer ftco-bg-light ftco-section">

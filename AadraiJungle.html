@@ -30,6 +30,7 @@
 
 
 	  <link rel="stylesheet" href="css/korigadFort.css">
+    
   </head>
   <body>
     
@@ -221,64 +222,69 @@
       </div>
       <div class="modal-body">
         <!-- Multi-step form -->
-        <form id="bookingForm" onsubmit="return validateForm()">
-          <!-- Step 1 -->
-          <div id="step1">
-            <div class="form-group">
-              <label for="fullName">Full Name</label>
-              <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
-              <small id="fullNameError" class="form-text text-danger" style="display:none;">Please enter your full name.</small>
-            </div>
-            <div class="form-group">
-              <label for="mobileNumber">Mobile Number</label>
-              <input type="tel" class="form-control" id="mobileNumber" placeholder="Enter your mobile number" pattern="[0-9]{10}" maxlength="10" required>
-              <small id="mobileNumberError" class="form-text text-danger" style="display:none;">Please enter a valid 10-digit mobile number (numbers only).</small>
-            </div>
-            <div class="form-group">
-              <label for="emailAddress">Email Address</label>
-              <input type="email" class="form-control" id="emailAddress" placeholder="Enter your email address" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required>
-              <small id="emailAddressError" class="form-text text-danger" style="display:none;">Please enter a valid email address with exactly one '@' and one '.'.</small>
-            </div>
-            <button type="button" class="btn btn-primary" onclick="validateStep1()">Next</button>
-          </div>
-        
-          <!-- Step 2 -->
-          <div id="step2" style="display:none;">
-            <div class="form-group">
-              <label for="selectDate">Select Date</label>
-              <input type="date" class="form-control" id="selectDate" required>
-              <small id="selectDateError" class="form-text text-danger" style="display:none;">Please select a date.</small>
-            </div>
-            <div class="form-group">
-              <label for="pickupPoint">Select Pickup Point</label>
-              <select class="form-control" id="pickupPoint" required>
-                <option value="" disabled selected>Please Select Pickup Point</option>
-                <option value="point1">Pickup Point 1</option>
-                <option value="point2">Pickup Point 2</option>
-              </select>
-              <small id="pickupPointError" class="form-text text-danger" style="display:none;">Please select a pickup point.</small>
-            </div>
-            <div class="form-group">
-              <label for="trekkersNumber">Number of Trekkers</label>
-              <div class="number-controls">
-                <button type="button" class="btn btn-outline-secondary number-btn" onclick="changeTrekkersNumber(-1)">-</button>
-                <input type="number" class="form-control" id="trekkersNumber" value="1" min="1" required>
-                <button type="button" class="btn btn-outline-secondary number-btn" onclick="changeTrekkersNumber(1)">+</button>
-              </div>
-              <small id="trekkersNumberError" class="form-text text-danger" style="display:none;">Please enter the number of trekkers.</small>
-            </div>
-            <div class="form-group">
-              <label for="totalPayment">Total To Pay</label>
-              <input type="text" class="form-control" id="totalPayment" placeholder="₹ 0/-" readonly>
-            </div>
-            <div class="form-group form-check">
-              <input type="checkbox" class="form-check-input" id="termsConditions" required>
-              <label class="form-check-label" for="termsConditions">Accept all terms & conditions and make payment</label>
-              <small id="termsConditionsError" class="form-text text-danger" style="display:none;">Please accept the terms and conditions.</small>
-            </div>
-            <button type="button" class="btn btn-secondary" onclick="downloadPDF()">Download PDF</button>
-          </div>
-        </form>
+      <!-- Multi-step form -->
+<form id="bookingForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="return validateForm()">
+  <!-- Web3Forms Access Key -->
+  <input type="hidden" name="access_key" value="598c7055-5c62-46bc-88fb-9c7d4ccbbfac">
+  
+  <!-- Step 1 -->
+  <div id="step1">
+    <div class="form-group">
+      <label for="fullName">Full Name</label>
+      <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+      <small id="fullNameError" class="form-text text-danger" style="display:none;">Please enter your full name.</small>
+    </div>
+    <div class="form-group">
+      <label for="mobileNumber">Mobile Number</label>
+      <input type="tel" class="form-control" id="mobileNumber" name="mobileNumber" placeholder="Enter your mobile number" pattern="[0-9]{10}" maxlength="10" required>
+      <small id="mobileNumberError" class="form-text text-danger" style="display:none;">Please enter a valid 10-digit mobile number (numbers only).</small>
+    </div>
+    <div class="form-group">
+      <label for="emailAddress">Email Address</label>
+      <input type="email" class="form-control" id="emailAddress" name="emailAddress" placeholder="Enter your email address" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required>
+      <small id="emailAddressError" class="form-text text-danger" style="display:none;">Please enter a valid email address with exactly one '@' and one '.'.</small>
+    </div>
+    <button type="button" class="btn btn-primary" onclick="validateStep1()">Next</button>
+  </div>
+
+  <!-- Step 2 -->
+  <div id="step2" style="display:none;">
+    <div class="form-group">
+      <label for="selectDate">Select Date</label>
+      <input type="date" class="form-control" id="selectDate" name="selectDate" required>
+      <small id="selectDateError" class="form-text text-danger" style="display:none;">Please select a date.</small>
+    </div>
+    <div class="form-group">
+      <label for="pickupPoint">Select Pickup Point</label>
+      <select class="form-control" id="pickupPoint" name="pickupPoint" required>
+        <option value="" disabled selected>Please Select Pickup Point</option>
+        <option value="point1">Pickup Point 1</option>
+        <option value="point2">Pickup Point 2</option>
+      </select>
+      <small id="pickupPointError" class="form-text text-danger" style="display:none;">Please select a pickup point.</small>
+    </div>
+    <div class="form-group">
+      <label for="trekkersNumber">Number of Trekkers</label>
+      <div class="number-controls">
+        <button type="button" class="btn btn-outline-secondary number-btn" onclick="changeTrekkersNumber(-1)">-</button>
+        <input type="number" class="form-control" id="trekkersNumber" name="trekkersNumber" value="1" min="1" required>
+        <button type="button" class="btn btn-outline-secondary number-btn" onclick="changeTrekkersNumber(1)">+</button>
+      </div>
+      <small id="trekkersNumberError" class="form-text text-danger" style="display:none;">Please enter the number of trekkers.</small>
+    </div>
+    <div class="form-group">
+      <label for="totalPayment">Total To Pay</label>
+      <input type="text" class="form-control" id="totalPayment" name="totalPayment" placeholder="₹ 0/-" readonly>
+    </div>
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" id="termsConditions" name="termsConditions" required>
+      <label class="form-check-label" for="termsConditions">Accept all terms & conditions and make payment</label>
+      <small id="termsConditionsError" class="form-text text-danger" style="display:none;">Please accept the terms and conditions.</small>
+    </div>
+    <button type="submit" class="btn btn-secondary" onclick="DownloadPDF()">Download PDF</button>
+  </div>
+</form>
+
         
         
       
@@ -411,40 +417,59 @@ document.getElementById('trekkersNumber').addEventListener('input', function() {
 
 </script>
 
-
-
 <!-- Script to download form -->
 <script>
 
-  function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+function sendEmailAndDownloadPDF() {
+  // Collect form data
+  const formData = new FormData();
+  formData.append('fullName', document.getElementById('fullName').value);
+  formData.append('mobileNumber', document.getElementById('mobileNumber').value);
+  formData.append('emailAddress', document.getElementById('emailAddress').value);
+  formData.append('selectDate', document.getElementById('selectDate').value);
+  formData.append('pickupPoint', document.getElementById('pickupPoint').value);
+  formData.append('trekkersNumber', document.getElementById('trekkersNumber').value);
+  
+  // Send data to the server
+  fetch('send_email.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.text())
+  .then(result => {
+    console.log('Email sent:', result);
+    // After email is sent, download the PDF
+    generatePDF();
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+}
 
-    // Get form data
-    const fullName = document.getElementById('fullName').value;
-    const mobileNumber = document.getElementById('mobileNumber').value;
-    const emailAddress = document.getElementById('emailAddress').value;
-    const selectDate = document.getElementById('selectDate').value;
-    const pickupPoint = document.getElementById('pickupPoint').value;
-    const trekkersNumber = document.getElementById('trekkersNumber').value;
-    const totalPayment = document.getElementById('totalPayment').value;
+function generatePDF() {
+  const { jsPDF } = window.jspdf;
 
-    // Add content to PDF
-    doc.setFontSize(14);
-    doc.text("Booking Form Details", 10, 10);
-    doc.setFontSize(12);
-    doc.text(`Full Name: ${fullName}`, 10, 20);
-    doc.text(`Mobile Number: ${mobileNumber}`, 10, 30);
-    doc.text(`Email Address: ${emailAddress}`, 10, 40);
-    doc.text(`Date: ${selectDate}`, 10, 50);
-    doc.text(`Pickup Point: ${pickupPoint}`, 10, 60);
-    doc.text(`Number of Trekkers: ${trekkersNumber}`, 10, 70);
-    doc.text(`Total Payment: ${totalPayment}`, 10, 80);
+  const doc = new jsPDF();
+  
+  // Add form data to the PDF
+  doc.text(`Full Name: ${document.getElementById('fullName').value}`, 10, 10);
+  doc.text(`Mobile Number: ${document.getElementById('mobileNumber').value}`, 10, 20);
+  doc.text(`Email Address: ${document.getElementById('emailAddress').value}`, 10, 30);
+  doc.text(`Select Date: ${document.getElementById('selectDate').value}`, 10, 40);
+  doc.text(`Pickup Point: ${document.getElementById('pickupPoint').value}`, 10, 50);
+  doc.text(`Number of Trekkers: ${document.getElementById('trekkersNumber').value}`, 10, 60);
 
-    // Save the PDF
-    doc.save('BookingForm.pdf');
-  }
+  // Add more fields as necessary
+
+  // Trigger download of PDF
+  doc.save('BookingDetails.pdf');
+}
+
 </script>
+
+    <!-- Include jsPDF from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
 <!-- END FORM  -->
 
 <footer class="ftco-footer ftco-bg-light ftco-section">

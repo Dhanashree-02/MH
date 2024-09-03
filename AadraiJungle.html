@@ -222,6 +222,7 @@
       </div>
       <div class="modal-body">
         <!-- Multi-step form -->
+<<<<<<< HEAD
       <!-- Multi-step form -->
 <form id="bookingForm" action="https://api.web3forms.com/submit" method="POST" onsubmit="return validateForm()">
   <!-- Web3Forms Access Key -->
@@ -286,6 +287,69 @@
 </form>
 
   
+=======
+        <form id="bookingForm" action="send_email.php" onsubmit="return validateForm()">
+          <!-- Step 1 -->
+          <div id="step1">
+            <div class="form-group">
+              <label for="fullName">Full Name</label>
+              <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+              <small id="fullNameError" class="form-text text-danger" style="display:none;">Please enter your full name.</small>
+            </div>
+            <div class="form-group">
+              <label for="mobileNumber">Mobile Number</label>
+              <input type="tel" class="form-control" id="mobileNumber" placeholder="Enter your mobile number" pattern="[0-9]{10}" maxlength="10" required>
+              <small id="mobileNumberError" class="form-text text-danger" style="display:none;">Please enter a valid 10-digit mobile number (numbers only).</small>
+            </div>
+            <div class="form-group">
+              <label for="emailAddress">Email Address</label>
+              <input type="email" class="form-control" id="emailAddress" placeholder="Enter your email address" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required>
+              <small id="emailAddressError" class="form-text text-danger" style="display:none;">Please enter a valid email address with exactly one '@' and one '.'.</small>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="validateStep1()">Next</button>
+          </div>
+        
+          <!-- Step 2 -->
+          <div id="step2" style="display:none;">
+            <div class="form-group">
+              <label for="selectDate">Select Date</label>
+              <input type="date" class="form-control" id="selectDate" required>
+              <small id="selectDateError" class="form-text text-danger" style="display:none;">Please select a date.</small>
+            </div>
+            <div class="form-group">
+              <label for="pickupPoint">Select Pickup Point</label>
+              <select class="form-control" id="pickupPoint" required>
+                <option value="" disabled selected>Please Select Pickup Point</option>
+                <option value="point1">Pickup Point 1</option>
+                <option value="point2">Pickup Point 2</option>
+              </select>
+              <small id="pickupPointError" class="form-text text-danger" style="display:none;">Please select a pickup point.</small>
+            </div>
+            <div class="form-group">
+              <label for="trekkersNumber">Number of Trekkers</label>
+              <div class="number-controls">
+                <button type="button" class="btn btn-outline-secondary number-btn" onclick="changeTrekkersNumber(-1)">-</button>
+                <input type="number" class="form-control" id="trekkersNumber" value="1" min="1" required>
+                <button type="button" class="btn btn-outline-secondary number-btn" onclick="changeTrekkersNumber(1)">+</button>
+              </div>
+              <small id="trekkersNumberError" class="form-text text-danger" style="display:none;">Please enter the number of trekkers.</small>
+            </div>
+            <div class="form-group">
+              <label for="totalPayment">Total To Pay</label>
+              <input type="text" class="form-control" id="totalPayment" placeholder="₹ 0/-" readonly>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="termsConditions" required>
+              <label class="form-check-label" for="termsConditions">Accept all terms & conditions and make payment</label>
+              <small id="termsConditionsError" class="form-text text-danger" style="display:none;">Please accept the terms and conditions.</small>
+            </div>
+            <button type="button" class="btn btn-secondary" onclick="sendEmailAndDownloadPDF()">Download PDF</button>
+          </div>
+        </form>
+        
+        
+      
+>>>>>>> e5eb5ed8c334073a9edb8c5b6a79253a8f8d8a01
       </div>
     </div>
   </div>

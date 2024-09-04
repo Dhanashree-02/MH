@@ -278,14 +278,14 @@
   </div>
 </div>
 
-<scrip>
-  const pricePerTrekker = 1599; // Define the price per trekker here
-  
+<script>
+  const pricePerTrekker = 1699;
+
   function showStep2() {
     if (validateStep1()) {
       document.getElementById('step1').style.display = 'none';
       document.getElementById('step2').style.display = 'block';
-      updateTotalPayment(); // Update total payment when step 2 is shown
+      updateTotalPayment();
     }
   }
 
@@ -296,82 +296,102 @@
   }
 
   function validateStep1() {
-    const fullName = document.getElementById('fullName').value;
-    const mobileNumber = document.getElementById('mobileNumber').value;
-    const emailAddress = document.getElementById('emailAddress').value;
+    let isValid = true;
+    clearErrors();
 
-    // Check if full name contains only letters and spaces
+    const fullName = document.getElementById('fullName').value.trim();
+    const mobileNumber = document.getElementById('mobileNumber').value.trim();
+    const emailAddress = document.getElementById('emailAddress').value.trim();
+
     if (!/^[A-Za-z\s]+$/.test(fullName)) {
-      alert("Please enter a valid full name (letters and spaces only).");
-      return false;
+      document.getElementById('fullNameError').innerText = "Please enter a valid full name (letters and spaces only).";
+      isValid = false;
     }
 
-    // Check if mobile number is a 10-digit number
     if (!/^\d{10}$/.test(mobileNumber)) {
-      alert("Please enter a valid 10-digit mobile number.");
-      return false;
+      document.getElementById('mobileNumberError').innerText = "Please enter a valid 10-digit mobile number.";
+      isValid = false;
     }
 
-    // Check if email address is in a valid format
     if (!/\S+@\S+\.\S+/.test(emailAddress)) {
-      alert("Please enter a valid email address.");
-      return false;
+      document.getElementById('emailAddressError').innerText = "Please enter a valid email address.";
+      isValid = false;
     }
 
-    return true;
+    return isValid;
+  }
+
+  function clearErrors() {
+    document.getElementById('fullNameError').innerText = "";
+    document.getElementById('mobileNumberError').innerText = "";
+    document.getElementById('emailAddressError').innerText = "";
+    document.getElementById('selectDateError').innerText = "";
+    document.getElementById('pickupPointError').innerText = "";
+    document.getElementById('trekkersNumberError').innerText = "";
+    document.getElementById('termsConditionsError').innerText = "";
   }
 
   function validateForm() {
+    let isValid = true;
+    clearErrors();
+
     const trekkersNumber = document.getElementById('trekkersNumber').value;
     const termsConditions = document.getElementById('termsConditions').checked;
 
     if (trekkersNumber < 1) {
-      alert("Please enter at least one trekker.");
-      return false;
+      document.getElementById('trekkersNumberError').innerText = "Please enter at least one trekker.";
+      isValid = false;
     }
 
     if (!termsConditions) {
-      alert("You must accept the terms and conditions to proceed.");
-      return false;
+      document.getElementById('termsConditionsError').innerText = "You must accept the terms and conditions to proceed.";
+      isValid = false;
     }
 
-    return true;
+    return isValid;
   }
 
   function handleFormSubmit(event) {
-    event.preventDefault(); // Prevent the default form submission
-
+    event.preventDefault();
     const form = document.getElementById('bookingForm');
-    const formData = new FormData(form);
 
-    // Disable the submit button to prevent multiple clicks
-    const submitButton = document.querySelector('button[type="submit"]');
-    submitButton.disabled = true;
+    if (validateStep1() && validateForm()) {
+      const submitButton = document.querySelector('button[type="submit"]');
+      if (submitButton.disabled) {
+        return;
+      }
 
-    // Send email via Web3Forms
-    fetch(form.action, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          alert("Email sent successfully!");
-          // After sending the email, download the PDF
-          downloadPDF();
-        } else {
-          alert("Failed to send email. Please try again later.");
-        }
+      const formData = new FormData(form);
+      const pickupPointElement = document.getElementById('pickupPoint');
+      const pickupPoint = pickupPointElement.options[pickupPointElement.selectedIndex].text;
+      formData.append('pickupPoint', pickupPoint);
+
+      submitButton.disabled = true;
+
+      fetch(form.action, {
+        method: "POST",
+        body: formData,
       })
-      .catch((error) => {
-        console.error("Error:", error);
-        alert("An error occurred. Please try again later.");
-      })
-      .finally(() => {
-        // Re-enable the submit button after processing
-        submitButton.disabled = false;
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            alert("Email sent successfully!");
+            downloadPDF();
+          } else {
+            alert("Failed to send email. Please try again later.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred. Please try again later.");
+        })
+        .finally(() => {
+          submitButton.disabled = false;
+        });
+    }
   }
+
+
 
   function downloadPDF() {
     const { jsPDF } = window.jspdf;
@@ -382,7 +402,8 @@
     const mobileNumber = document.getElementById('mobileNumber').value;
     const emailAddress = document.getElementById('emailAddress').value;
     const selectDate = document.getElementById('selectDate').value;
-    const pickupPoint = document.getElementById('pickupPoint').options[document.getElementById('pickupPoint').selectedIndex].text;
+    const pickupPointElement = document.getElementById('pickupPoint');
+    const pickupPoint = pickupPointElement.options[pickupPointElement.selectedIndex].text;
     const trekkersNumber = document.getElementById('trekkersNumber').value;
     const totalPayment = document.getElementById('totalPayment').value;
 
@@ -412,7 +433,6 @@
   document.getElementById('bookingForm').addEventListener('submit', handleFormSubmit);
 
 </script>
-
 
     <!-- To Downlod PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

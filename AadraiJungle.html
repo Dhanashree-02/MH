@@ -402,9 +402,7 @@
     }
   }
 
-
-
-  function downloadPDF() {
+function downloadPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
@@ -418,30 +416,78 @@
     const trekkersNumber = document.getElementById('trekkersNumber').value;
     const totalPayment = document.getElementById('totalPayment').value;
 
-    // Add content to PDF
-    doc.setFontSize(14);
-    doc.text("Booking Form Details", 10, 10);
+    // Add header content
+    doc.setFontSize(16);
+    doc.setFont("helvetica", "bold");
+    doc.text("Booking Form Details", 105, 20, { align: "center" }); // Centered title
+
+    // Draw a line under the title
+    doc.setLineWidth(0.5);
+    doc.line(20, 25, 190, 25);
+
+    // Recipient information
     doc.setFontSize(12);
-    doc.text(`Full Name: ${fullName}`, 10, 20);
-    doc.text(`Mobile Number: ${mobileNumber}`, 10, 30);
-    doc.text(`Email Address: ${emailAddress}`, 10, 40);
-    doc.text(`Date: ${selectDate}`, 10, 50);
-    doc.text(`Pickup Point: ${pickupPoint}`, 10, 60);
-    doc.text(`Number of Trekkers: ${trekkersNumber}`, 10, 70);
-    doc.text(`Total Payment: ${totalPayment}`, 10, 80);
+    doc.setFont("helvetica", "normal");
+    doc.text("To,", 20, 35);
+    doc.text(fullName, 20, 45);
+    doc.text(emailAddress, 20, 55);
+    doc.text(mobileNumber, 20, 65);
+
+    // Add a table header
+    doc.setFont("helvetica", "bold");
+    doc.text("Description", 20, 85);
+    doc.text("Date", 80, 85);
+    doc.text("Price", 120, 85);
+    doc.text("No. of People", 140, 85);
+    doc.text("Amount", 180, 85);
+
+    // Add table content
+    doc.setFont("helvetica", "normal");
+    doc.text("Trekking Booking", 20, 95);
+    doc.text(selectDate, 80, 95);
+    doc.text("1000", 120, 95); // Example price, replace with your data
+    doc.text(trekkersNumber, 140, 95);
+    doc.text(totalPayment, 180, 95);
+
+    // Add amount in words
+    const totalInWords = convertNumberToWords(totalPayment); // Helper function to convert numbers to words
+    doc.setFont("helvetica", "bold");
+    doc.text("Amount in Words:", 20, 115);
+    doc.setFont("helvetica", "normal");
+    doc.text(totalInWords, 70, 115);
+
+    // Add total amount
+    doc.setFont("helvetica", "bold");
+    doc.text("Total:", 150, 125);
+    doc.setFont("helvetica", "normal");
+    doc.text(totalPayment, 180, 125);
 
     // Save the PDF
     doc.save('BookingForm.pdf');
 
     // Refresh the page after PDF download
     setTimeout(() => {
-      window.location.reload(); // Refresh the page after a delay
+        window.location.reload(); // Refresh the page after a delay
     }, 1000); // Delay to ensure the PDF is downloaded before the page reloads
-  }
+}
 
-  // Event listeners
-  document.getElementById('trekkersNumber').addEventListener('input', updateTotalPayment);
-  document.getElementById('bookingForm').addEventListener('submit', handleFormSubmit);
+// Function to convert numbers to words (for amount in words)
+function convertNumberToWords(amount) {
+    // You can use a library or implement your own logic here
+    // Example: Converting 123 to "One Hundred Twenty Three"
+    // For simplicity, using a basic version here
+    const words = [
+        '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen', 'Twenty',
+        'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'
+    ];
+    // Custom implementation or use a library like "number-to-words"
+    return "Amount in words"; // Implement conversion logic
+}
+
+// Event listeners
+document.getElementById('trekkersNumber').addEventListener('input', updateTotalPayment);
+document.getElementById('bookingForm').addEventListener('submit', handleFormSubmit);
+
 
 </script>
 

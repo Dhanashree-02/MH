@@ -187,10 +187,10 @@
                     </ul>
                 </section>
 
-                <!-- <section id="pickup-points" class="mt-5">
+                <section id="pickup-points" class="mt-5">
                     <h3>Pickup Points</h3>
-                    <ul><li>Pune pickup: JM corner Shivajinagar - Nashik Phata</li></ul>
-                </section> -->
+                    <ul><li>Pune</li></ul>
+                </section>
 
 
                 <!-- Button to Open the Modal -->
@@ -217,7 +217,6 @@
 
      <!-- FOR OPEN A FORM -->
 
- <!-- Modal HTML -->
 
  <!-- Modal HTML -->
  <div class="modal fade" id="bookNowModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -268,10 +267,8 @@
               <select class="form-control" id="pickupPoint" required>
                 <option value="" disabled selected>Please Select Pickup Point</option>
                 <!-- Add your pickup points here -->
-                <option value="point1">Pune- JM corner shivajinagar</option>
-                <option value="point2">Pune- nashik phata </option>
-                <option value="point3">Mumbai- Andheri</option>
-                <option value="point4">Mumbai- sion -thane</option>
+                <option value="point1">Pune</option>
+             
               </select>
               <small class="text-danger" id="pickupPointError"></small>
             </div>
@@ -300,7 +297,7 @@
 
 
 <script>
-  const pricePerTrekker = 1699;
+  const pricePerTrekker = 1599;
 
   function showStep2() {
     if (validateStep1()) {

@@ -211,28 +211,34 @@
       </div>
       <div class="modal-body">
         <!-- Multi-step form -->
-        <form id="bookingForm">
+        <form id="bookingForm" onsubmit="return handleFormSubmit(event)" action="https://api.web3forms.com/submit" method="POST">
+          <!-- Hidden Web3Forms Access Key -->
+          <input type="hidden" name="access_key" value="598c7055-5c62-46bc-88fb-9c7d4ccbbfac">
+          <!-- Email recipient -->
+          <input type="hidden" name="email" value="info@matoshreeholidaystoursandtravels.com">
+          
           <!-- Step 1 -->
           <div id="step1">
             <div class="form-group">
               <label for="fullName">Full Name</label>
-              <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+              <input type="text" class="form-control" name="fullName" id="fullName" placeholder="Enter your full name" required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed.">
             </div>
             <div class="form-group">
               <label for="mobileNumber">Mobile Number</label>
-              <input type="tel" class="form-control" id="mobileNumber" placeholder="Enter your mobile number" required>
+              <input type="tel" class="form-control" name="mobileNumber" id="mobileNumber" placeholder="Enter your mobile number" required pattern="^\d{10}$" title="Enter a 10-digit mobile number.">
             </div>
             <div class="form-group">
               <label for="emailAddress">Email Address</label>
-              <input type="email" class="form-control" id="emailAddress" placeholder="Enter your email address" required>
+              <input type="email" class="form-control" name="emailAddress" id="emailAddress" placeholder="Enter your email address" required>
             </div>
             <button type="button" class="btn btn-primary" onclick="showStep2()">Next</button>
           </div>
+
           <!-- Step 2 -->
-          <div id="step2" style="display:none;">
+            <div id="step2" style="display:none;">
             <div class="form-group">
               <label for="selectDate">Select Date</label>
-              <input type="date" class="form-control" id="selectDate" required>
+              <input type="date" class="form-control" name="selectDate" id="selectDate" required min="<?= date('Y-m-d'); ?>">
             </div>
             <div class="form-group">
               <label for="pickupPoint">Select Pickup Point</label>
@@ -245,21 +251,18 @@
             </div>
             <div class="form-group">
               <label for="trekkersNumber">Number of Trekkers</label>
-              <input type="number" class="form-control" id="trekkersNumber" placeholder="0" min="1" value="1" inputmode="numeric" required>
+              <input type="number" class="form-control" name="trekkersNumber" id="trekkersNumber" placeholder="0" min="1" value="1" inputmode="numeric" required>
             </div>
             <div class="form-group">
               <label for="totalPayment">Total To Pay</label>
-              <input type="text" class="form-control" id="totalPayment" placeholder="₹ 0/-" readonly>
-            </div>
-            <div class="form-group">
-              <label for="offerCode">Offer/Promo Code</label>
-              <input type="text" class="form-control" id="offerCode" placeholder="Enter offer code">
+              <input type="text" class="form-control" id="totalPayment" name="totalPayment" placeholder="₹ 0/-" readonly>
             </div>
             <div class="form-group form-check">
               <input type="checkbox" class="form-check-input" id="termsConditions" required>
               <label class="form-check-label" for="termsConditions">Accept all terms & conditions and make payment</label>
             </div>
-            <button type="submit" class="btn btn-success">Make Payment</button>
+            <!-- Combined Button -->
+            <button type="submit" class="btn btn-success">Send Email & Download PDF</button>
           </div>
         </form>
       </div>
@@ -271,9 +274,11 @@
   const pricePerTrekker = 1599; // Define the price per trekker here
 
   function showStep2() {
-    document.getElementById('step1').style.display = 'none';
-    document.getElementById('step2').style.display = 'block';
-    updateTotalPayment(); // Update total payment when step 2 is shown
+    if (validateStep1()) {
+      document.getElementById('step1').style.display = 'none';
+      document.getElementById('step2').style.display = 'block';
+      updateTotalPayment(); // Update total payment when step 2 is shown
+    }
   }
 
   function updateTotalPayment() {
@@ -282,12 +287,127 @@
     document.getElementById('totalPayment').value = `₹ ${totalPayment}/-`;
   }
 
-  // Event listener to update payment on input
+  function validateStep1() {
+    const fullName = document.getElementById('fullName').value;
+    const mobileNumber = document.getElementById('mobileNumber').value;
+    const emailAddress = document.getElementById('emailAddress').value;
+
+    // Check if full name contains only letters and spaces
+    if (!/^[A-Za-z\s]+$/.test(fullName)) {
+      alert("Please enter a valid full name (letters and spaces only).");
+      return false;
+    }
+
+    // Check if mobile number is a 10-digit number
+    if (!/^\d{10}$/.test(mobileNumber)) {
+      alert("Please enter a valid 10-digit mobile number.");
+      return false;
+    }
+
+    // Check if email address is in a valid format
+    if (!/\S+@\S+\.\S+/.test(emailAddress)) {
+      alert("Please enter a valid email address.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function validateForm() {
+    const trekkersNumber = document.getElementById('trekkersNumber').value;
+    const termsConditions = document.getElementById('termsConditions').checked;
+
+    if (trekkersNumber < 1) {
+      alert("Please enter at least one trekker.");
+      return false;
+    }
+
+    if (!termsConditions) {
+      alert("You must accept the terms and conditions to proceed.");
+      return false;
+    }
+
+    return true;
+  }
+
+  function handleFormSubmit(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const form = document.getElementById('bookingForm');
+    const formData = new FormData(form);
+
+    // Disable the submit button to prevent multiple clicks
+    const submitButton = document.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+
+    // Send email via Web3Forms
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          alert("Email sent successfully!");
+          // After sending the email, download the PDF
+          downloadPDF();
+        } else {
+          alert("Failed to send email. Please try again later.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred. Please try again later.");
+      })
+      .finally(() => {
+        // Re-enable the submit button after processing
+        submitButton.disabled = false;
+      });
+  }
+
+  function downloadPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Get form data
+    const fullName = document.getElementById('fullName').value;
+    const mobileNumber = document.getElementById('mobileNumber').value;
+    const emailAddress = document.getElementById('emailAddress').value;
+    const selectDate = document.getElementById('selectDate').value;
+    const pickupPoint = document.getElementById('pickupPoint').options[document.getElementById('pickupPoint').selectedIndex].text;
+    const trekkersNumber = document.getElementById('trekkersNumber').value;
+    const totalPayment = document.getElementById('totalPayment').value;
+
+    // Add content to PDF
+    doc.setFontSize(14);
+    doc.text("Booking Form Details", 10, 10);
+    doc.setFontSize(12);
+    doc.text(`Full Name: ${fullName}`, 10, 20);
+    doc.text(`Mobile Number: ${mobileNumber}`, 10, 30);
+    doc.text(`Email Address: ${emailAddress}`, 10, 40);
+    doc.text(`Date: ${selectDate}`, 10, 50);
+    doc.text(`Pickup Point: ${pickupPoint}`, 10, 60);
+    doc.text(`Number of Trekkers: ${trekkersNumber}`, 10, 70);
+    doc.text(`Total Payment: ${totalPayment}`, 10, 80);
+
+    // Save the PDF
+    doc.save('BookingForm.pdf');
+
+    // Refresh the page after PDF download
+    setTimeout(() => {
+      window.location.reload(); // Refresh the page after a delay
+    }, 1000); // Delay to ensure the PDF is downloaded before the page reloads
+  }
+
+  // Event listeners
   document.getElementById('trekkersNumber').addEventListener('input', updateTotalPayment);
+  document.getElementById('bookingForm').addEventListener('submit', handleFormSubmit);
+
 </script>
 
 
-
+    <!-- To Downlod PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <!-- END FORM  -->
 
 <footer class="ftco-footer ftco-bg-light ftco-section">

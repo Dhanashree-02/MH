@@ -287,7 +287,6 @@
   </div>
 </div>
 
-
 <script>
   const pricePerTrekker = 1699;
 
@@ -402,11 +401,48 @@
   }
 
 
+  // convert no to words
+  function numberToWords(number) {
+    const ones = ["", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE"];
+    const teens = ["ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN", "SEVENTEEN", "EIGHTEEN", "NINETEEN"];
+    const tens = ["", "TEN", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY", "NINETY"];
+    const thousands = ["", "THOUSAND", "MILLION", "BILLION"];
 
-  function downloadPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
+    if (number === 0) return "ZERO";
 
+    let word = '';
+    let numStr = number.toString();
+    let count = 0;
+
+    while (numStr.length > 0) {
+        const segment = parseInt(numStr.slice(-3), 10); // Process in groups of three digits
+        if (segment) {
+            let segmentWords = '';
+            if (segment > 99) {
+                segmentWords += ones[Math.floor(segment / 100)] + " HUNDRED ";
+                segment %= 100;
+            }
+            if (segment > 10 && segment < 20) {
+                segmentWords += teens[segment - 11] + " ";
+            } else {
+                segmentWords += tens[Math.floor(segment / 10)] + " ";
+                segment %= 10;
+                segmentWords += ones[segment] + " ";
+            }
+            word = segmentWords + thousands[count] + " " + word;
+        }
+        numStr = numStr.slice(0, -3); // Remove processed segment
+        count++;
+    }
+
+    return word.trim() + " ONLY";
+}
+
+function downloadPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+
+  try {
     // Get form data
     const fullName = document.getElementById('fullName').value;
     const mobileNumber = document.getElementById('mobileNumber').value;
@@ -414,35 +450,89 @@
     const selectDate = document.getElementById('selectDate').value;
     const pickupPointElement = document.getElementById('pickupPoint');
     const pickupPoint = pickupPointElement.options[pickupPointElement.selectedIndex].text;
-    const trekkersNumber = document.getElementById('trekkersNumber').value;
-    const totalPayment = document.getElementById('totalPayment').value;
+    const trekkersNumber = parseInt(document.getElementById('trekkersNumber').value); // Ensure it is an integer
+    const pricePerPerson = 1799.00; // Example fixed price per person
 
-    // Add content to PDF
+    // Calculate total payment
+    const totalPayment = trekkersNumber * pricePerPerson;
+
+    // Convert totalPayment to words
+    const totalPaymentWords = numberToWords(Math.round(totalPayment));
+
+    // Add content to PDF with styles
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("m/s. Trekbro", 10, 10);
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
+    doc.text("Pune, Maharashtra 411044", 10, 15);
+    doc.text("+91 95958 59508 | info@matoshreeholidaystoursandtravels.com", 10, 20);
+
+    // Right-aligned logo and date
+    doc.addImage('images/logo.png', 'PNG', 150, 5, 40, 20); // Ensure this path is correct and accessible
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "bold");
+    doc.text("Date: " + new Date().toLocaleDateString(), 180, 40, { align: 'right' });
+
+    // Invoice Title
     doc.setFontSize(14);
-    doc.text("Booking Form Details", 10, 10);
-    doc.setFontSize(12);
-    doc.text(`Full Name: ${fullName}`, 10, 20);
-    doc.text(`Mobile Number: ${mobileNumber}`, 10, 30);
-    doc.text(`Email Address: ${emailAddress}`, 10, 40);
-    doc.text(`Date: ${selectDate}`, 10, 50);
-    doc.text(`Pickup Point: ${pickupPoint}`, 10, 60);
-    doc.text(`Number of Trekkers: ${trekkersNumber}`, 10, 70);
-    doc.text(`Total Payment: ${totalPayment}`, 10, 80);
+    doc.text("INVOICE", 10, 50);
+
+    // Customer Details
+    doc.setFontSize(10);
+    doc.text("To,", 10, 70);
+    doc.text(fullName, 10, 75);
+    doc.text(emailAddress, 10, 80);
+    doc.text(mobileNumber, 10, 85);
+
+    // Add table-like structure
+    doc.setDrawColor(0);
+    doc.setFillColor(230, 230, 230);
+    doc.rect(10, 100, 190, 10, 'F');
+    doc.setFont("helvetica", "bold");
+    doc.text("Description", 12, 107);
+    doc.text("Date", 80, 107);
+    doc.text("Price", 120, 107);
+    doc.text("No. of People", 150, 107);
+    doc.text("Amount", 180, 107, { align: 'right' });
+
+    // Add booking details
+    doc.setFont("helvetica", "normal");
+    doc.text("Vasota Fort Camping and Trek Event", 12, 117);
+    doc.text(selectDate, 80, 117);
+    doc.text(pricePerPerson.toFixed(2), 120, 117);
+    doc.text(trekkersNumber.toString(), 160, 117); // Convert to string to ensure proper alignment
+    doc.text(totalPayment.toFixed(2) + "/-", 180, 117, { align: 'right' });
+
+    // Add Amount in words and Total
+    doc.setFont("helvetica", "bold");
+    doc.text("Amount in Words:", 12, 130);
+    doc.setFont("helvetica", "normal");
+    doc.text(totalPaymentWords, 50, 130); // Dynamically generated words for the total payment
+
+    doc.setFont("helvetica", "bold");
+    doc.text("Subtotal:", 160, 140, { align: 'right' });
+    doc.text(totalPayment.toFixed(2) + "/-", 180, 140, { align: 'right' });
 
     // Save the PDF
-    doc.save('BookingForm.pdf');
+    doc.save('Invoice.pdf');
 
     // Refresh the page after PDF download
     setTimeout(() => {
       window.location.reload(); // Refresh the page after a delay
     }, 1000); // Delay to ensure the PDF is downloaded before the page reloads
+
+  } catch (error) {
+    console.error("Error creating PDF:", error);
+    alert("An error occurred while generating the PDF. Please try again.");
   }
+}
 
   // Event listeners
   document.getElementById('trekkersNumber').addEventListener('input', updateTotalPayment);
   document.getElementById('bookingForm').addEventListener('submit', handleFormSubmit);
-
 </script>
+
 
 
 <!-- TO downlod PDF -->

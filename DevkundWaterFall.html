@@ -437,7 +437,6 @@
 
     return word.trim() + " ONLY";
 }
-
 function downloadPDF() {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
@@ -462,11 +461,12 @@ function downloadPDF() {
     // Add content to PDF with styles
     doc.setFontSize(10);
     doc.setFont("helvetica", "bold");
-    doc.text("m/s. Trekbro", 10, 10);
+    doc.text("Mr. / Swapnil", 10, 10);
     doc.setFontSize(8);
     doc.setFont("helvetica", "normal");
-    doc.text("Pune, Maharashtra 411044", 10, 15);
-    doc.text("+91 95958 59508 | info@matoshreeholidaystoursandtravels.com", 10, 20);
+    // doc.text("DY Patil College Rd, Dharmaj Chowk, Akurdi,", 10, 15);
+    doc.text("Pune, Maharashtra 411044", 10, 20);
+    doc.text("+91 95958 59508 | info@matoshreeholidaystoursandtravels.com", 10, 25);
 
     // Right-aligned logo and date
     doc.addImage('images/logo.png', 'PNG', 150, 5, 40, 20); // Ensure this path is correct and accessible
@@ -478,41 +478,55 @@ function downloadPDF() {
     doc.setFontSize(14);
     doc.text("INVOICE", 10, 50);
 
+    // Invoice Details
+    // doc.setFontSize(10);
+    // doc.text("Invoice No : #1778", 10, 60);
+    // doc.text("Booking ID : MDW#3902TR", 10, 65);
+    // doc.text("Transaction ID : E240318MYROSQQ", 10, 70);
+
     // Customer Details
-    doc.setFontSize(10);
-    doc.text("To,", 10, 70);
-    doc.text(fullName, 10, 75);
-    doc.text(emailAddress, 10, 80);
-    doc.text(mobileNumber, 10, 85);
+    doc.text("To,", 10, 85);
+    doc.text(fullName, 10, 90);
+    doc.text(emailAddress, 10, 95);
+    doc.text(mobileNumber, 10, 100);
 
     // Add table-like structure
     doc.setDrawColor(0);
     doc.setFillColor(230, 230, 230);
-    doc.rect(10, 100, 190, 10, 'F');
+    doc.rect(10, 110, 190, 10, 'F');
     doc.setFont("helvetica", "bold");
-    doc.text("Description", 12, 107);
-    doc.text("Date", 80, 107);
-    doc.text("Price", 120, 107);
-    doc.text("No. of People", 150, 107);
-    doc.text("Amount", 180, 107, { align: 'right' });
+    doc.text("Description", 12, 117);
+    doc.text("Date", 80, 117);
+    doc.text("Price", 120, 117);
+    doc.text("No. of People", 150, 117);
+    doc.text("Amount", 180, 117, { align: 'right' });
 
     // Add booking details
     doc.setFont("helvetica", "normal");
-    doc.text("Vasota Fort Camping and Trek Event", 12, 117);
-    doc.text(selectDate, 80, 117);
-    doc.text(pricePerPerson.toFixed(2), 120, 117);
-    doc.text(trekkersNumber.toString(), 160, 117); // Convert to string to ensure proper alignment
-    doc.text(totalPayment.toFixed(2) + "/-", 180, 117, { align: 'right' });
+    doc.text("Vasota Fort Camping and Trek Event", 12, 127);
+    doc.text(selectDate, 80, 127);
+    doc.text(pricePerPerson.toFixed(2), 120, 127);
+    doc.text(trekkersNumber.toString(), 160, 127); // Convert to string to ensure proper alignment
+    doc.text(totalPayment.toFixed(2) + "/-", 180, 127, { align: 'right' });
 
     // Add Amount in words and Total
     doc.setFont("helvetica", "bold");
-    doc.text("Amount in Words:", 12, 130);
+    doc.text("Amount in Words:", 12, 140);
     doc.setFont("helvetica", "normal");
-    doc.text(totalPaymentWords, 50, 130); // Dynamically generated words for the total payment
+    doc.text(totalPaymentWords, 50, 140); // Dynamically generated words for the total payment
 
     doc.setFont("helvetica", "bold");
-    doc.text("Subtotal:", 160, 140, { align: 'right' });
-    doc.text(totalPayment.toFixed(2) + "/-", 180, 140, { align: 'right' });
+    doc.text("Subtotal:", 160, 150, { align: 'right' });
+    doc.text(totalPayment.toFixed(2) + "/-", 180, 150, { align: 'right' });
+
+    // Add text at the bottom of the page
+    doc.setFontSize(8);
+    doc.setFont("helvetica", "normal");
+    doc.text("For, Mi Durg Veda", 150, 230); // Position the text accordingly
+    doc.text("For any queries, Please contact our customer support on +91 95958 59508 or Email us oninfo@matoshreeholidaystoursandtravels.com", 10, 290);
+
+    // Add signature image (if needed)
+    // doc.addImage('images/signature.png', 'PNG', 150, 240, 40, 20); // Ensure this path is correct and accessible
 
     // Save the PDF
     doc.save('Invoice.pdf');
@@ -527,6 +541,7 @@ function downloadPDF() {
     alert("An error occurred while generating the PDF. Please try again.");
   }
 }
+
 
   // Event listeners
   document.getElementById('trekkersNumber').addEventListener('input', updateTotalPayment);

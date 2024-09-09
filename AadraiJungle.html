@@ -453,7 +453,7 @@ function downloadPDF() {
         // Convert totalPayment to words
         const totalPaymentWords = numberToWords(Math.round(totalPayment));
 
-                  // Add content to PDF
+           // Add content to PDF
           doc.setFontSize(14);
           doc.setFont("helvetica", "bold");
           doc.text("Mr. Swapnil", 10, 20);
@@ -462,14 +462,15 @@ function downloadPDF() {
           doc.text("Pune, Maharashtra 411044", 10, 40);
           doc.text("+91 95958 59508 | info@matoshreeholidaystoursandtravels.com", 10, 30);
 
-          // Add a larger logo with more space between the date and logo
+         // Add a larger logo with more space between the date and logo
           const logoPath = 'images/logo.png'; // Update this to a valid path
-          doc.addImage(logoPath, 'PNG', 150, 10, 40, 40); // Enlarged logo and adjusted position
+          doc.addImage(logoPath, 'PNG', 150, 10, 70, 50); // Enlarged logo and adjusted position
 
           // Right-aligned date with space from logo
           doc.setFontSize(10);
           doc.setFont("helvetica", "bold");
-          doc.text("Date: " + new Date().toLocaleDateString(), 190, 55, { align: 'right' }); // Moved down to give space
+          doc.text("Date: " + new Date().toLocaleDateString(), 190, 75, { align: 'right' }); // Moved down to give space
+
 
           // Horizontal line closer to the INVOICE title
           doc.line(10, 70, 200, 70);

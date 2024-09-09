@@ -449,58 +449,61 @@ function downloadPDF() {
         // Convert totalPayment to words
         const totalPaymentWords = numberToWords(Math.round(totalPayment));
 
-        // Add content to PDF
-        doc.setFontSize(14);
-        doc.setFont("helvetica", "bold");
-        doc.text("Mr. Swapnil", 10, 10);
-        doc.setFontSize(12);
-        doc.setFont("helvetica", "normal");
-        doc.text("Pune, Maharashtra 411044", 10, 20);
-        doc.text("+91 95958 59508 | info@matoshreeholidaystoursandtravels.com", 10, 25);
+                  // Add content to PDF
+          doc.setFontSize(14);
+          doc.setFont("helvetica", "bold");
+          doc.text("Mr. Swapnil", 10, 20);
+          doc.setFontSize(12);
+          doc.setFont("helvetica", "normal");
+          doc.text("Pune, Maharashtra 411044", 10, 40);
+          doc.text("+91 95958 59508 | info@matoshreeholidaystoursandtravels.com", 10, 30);
 
-        // Add a logo 
-        const logoPath = 'images/logo.png'; // Update this to a valid path
-        doc.addImage(logoPath, 'PNG', 150, 10, 50, 30);
+          // Add a larger logo with more space between the date and logo
+          const logoPath = 'images/logo.png'; // Update this to a valid path
+          doc.addImage(logoPath, 'PNG', 150, 10, 40, 40); // Enlarged logo and adjusted position
 
-        // Right-aligned date
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "bold");
-        doc.text("Date: " + new Date().toLocaleDateString(), 180, 40, { align: 'right' });
+          // Right-aligned date with space from logo
+          doc.setFontSize(10);
+          doc.setFont("helvetica", "bold");
+          doc.text("Date: " + new Date().toLocaleDateString(), 190, 55, { align: 'right' }); // Moved down to give space
 
-        doc.line(10, 63, 200, 63);
+          // Horizontal line closer to the INVOICE title
+          doc.line(10, 70, 200, 70);
 
-        // Invoice Title
-        doc.setFontSize(16);
-        doc.text("INVOICE", 10, 50);
+          // Invoice Title with less space between title and horizontal line
+          doc.setFontSize(16);
+          doc.text("INVOICE", 10, 63); // Adjusted position for less space
 
-        // Customer Details
-        doc.setFontSize(12);
-        doc.text("To,", 10, 85);
-        doc.text(fullName, 10, 90);
-        doc.text(emailAddress, 10, 95);
-        doc.text(mobileNumber, 10, 100);
+          // Customer Details with Times New Roman font
+          doc.setFontSize(12);
+          doc.setFont("helvetica", "normal"); // Changed font to Times New Roman
+          doc.text("To,", 10, 85);
+          doc.text(fullName, 10, 90);
+          doc.text(emailAddress, 10, 95);
+          doc.text(mobileNumber, 10, 100);
 
-        // Add table-like structure
-        doc.setDrawColor(0);
-        doc.setFillColor(230, 230, 230);
-        doc.rect(10, 60, 190, 8, 'F');
-        doc.setFont("helvetica", "bold");
-        doc.text("Description", 12, 65);
-        doc.text("Date", 80, 65);
-        doc.text("Price", 120, 65);
-        doc.text("Trekkers", 150, 65);
-        doc.text("Amount", 180, 65, { align: 'right' });
+          // Add table-like structure
+          doc.setDrawColor(0);
+          doc.setFillColor(230, 230, 230);
+          doc.rect(10, 110, 190, 10, 'F');
+          doc.setFont("helvetica", "bold");
+          doc.text("Description", 12, 117);
+          doc.text("Date", 70, 117); // Moved left
+          doc.text("Price", 105, 117); // Moved left
+          doc.text("Trekkers", 135, 117); // Moved left
+          doc.text("Amount", 170, 117, { align: 'right' }); // Moved left
 
-        // Add booking details
-        doc.setFont("helvetica", "normal");
-        doc.text("Ratnagad Fort ", 12, 127);
-        doc.text(selectDate, 80, 127);
-        doc.text(pricePerPerson.toFixed(2), 120, 127);
-        doc.text(trekkersNumber.toString(), 160, 73);
-        doc.text(totalPayment.toFixed(2) + "/-", 180, 127, { align: 'right' });
+          // Add booking details
+          doc.setFont("helvetica", "normal");
+          doc.text(" Ratnagad Fort", 12, 127);
+          doc.text(selectDate, 70, 127); // Moved left
+          doc.text(pricePerPerson.toFixed(2), 105, 127); // Moved left
+          doc.text(trekkersNumber.toString(), 135, 127); // Moved left
+          doc.text(totalPayment.toFixed(2) + "/-", 170, 127, { align: 'right' }); // Moved left
 
-        doc.line(10, 130, 200, 130);
-                                                    
+          doc.line(10, 130, 200, 130);
+
+
         // Add Amount in words and Total
         doc.setFont("helvetica", "bold");
         doc.text("Amount in Words:", 12, 140);
@@ -511,11 +514,20 @@ function downloadPDF() {
         doc.text("Subtotal:  ", 160, 150, { align: 'right' });
         doc.text(totalPayment.toFixed(2) + "/-", 180, 150, { align: 'right' });
 
-        // Footer Information
-        doc.setFontSize(10);
-        doc.setFont("helvetica", "normal");
-        doc.text("For, Matoshree Holidays ", 150, 230);
-        doc.text("For any queries, please contact our customer support on +91 95958 59508 or email us at info@matoshreeholidaystoursandtravels.com", 10, 290);
+            // Footer Information
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal");
+
+      // Position footer text closer to the bottom without extra white space
+      doc.text("For, Matoshree Holidays", 150, 270); // Adjusted Y position for less white space
+
+      // Wrapping long text to fit within page width
+      const footerText = "For any queries, please contact our customer support on +91 95958 59508 or email us at info@matoshreeholidaystoursandtravels.com";
+      const wrappedText = doc.splitTextToSize(footerText, 180); // 180 is the max width for the text
+
+      // Display the wrapped text at the desired position
+      doc.text(wrappedText, 10, 280); // Adjusted Y position for better placement
+
 
         // Save the PDF
         doc.save('Invoice.pdf');
@@ -538,7 +550,6 @@ document.getElementById('trekkersNumber').addEventListener('input', updateTotalP
 document.getElementById('bookingForm').addEventListener('submit', handleFormSubmit);
 
 </script>
-
 
     <!-- To Downlod PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

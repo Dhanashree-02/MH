@@ -463,15 +463,14 @@ function downloadPDF() {
           doc.text("Pune, Maharashtra 411044", 10, 40);
           doc.text("+91 95958 59508 | info@matoshreeholidaystoursandtravels.com", 10, 30);
 
-            // Add a larger logo with more space between the date and logo
-            const logoPath = 'images/logo.png'; // Update this to a valid path
+           // Add a larger logo with more space between the date and logo
+          const logoPath = 'images/logo.png'; // Update this to a valid path
           doc.addImage(logoPath, 'PNG', 150, 10, 70, 50); // Enlarged logo and adjusted position
 
           // Right-aligned date with space from logo
           doc.setFontSize(10);
           doc.setFont("helvetica", "bold");
-          doc.text("Date: " + new Date().toLocaleDateString(), 190, 75, { align: 'right' }); // Moved down to give space
-
+          doc.text("Date: " + new Date().toLocaleDateString(), 190, 75, { align: 'right' }); // Moved down to give space  
           // Horizontal line closer to the INVOICE title
           doc.line(10, 70, 200, 70);
 
@@ -524,7 +523,7 @@ function downloadPDF() {
       doc.setFont("helvetica", "normal");
 
       // Position footer text closer to the bottom without extra white space
-      doc.text("For, Matoshree Holidays", 150, 270); // Adjusted Y position for less white space
+        doc.text("For, Matoshree Holidays", 150, 270); // Adjusted Y position for less white space
 
       // Wrapping long text to fit within page width
       const footerText = "For any queries, please contact our customer support on +91 95958 59508 or email us at info@matoshreeholidaystoursandtravels.com";

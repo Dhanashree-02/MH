@@ -435,7 +435,7 @@ function downloadPDF() {
         const pickupPointElement = document.getElementById('pickupPoint');
         const pickupPoint = pickupPointElement.options[pickupPointElement.selectedIndex].text;
         const trekkersNumber = parseInt(document.getElementById('trekkersNumber').value);
-        const pricePerPerson = 1799.00;
+        const pricePerPerson = 1599.00;
 
         // Calculate total payment
         const totalPayment = trekkersNumber * pricePerPerson;
@@ -536,7 +536,7 @@ document.getElementById('bookingForm').addEventListener('submit', handleFormSubm
 
     <!-- To Downlod PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
+
 <!-- END FORM  -->
 
 <footer class="ftco-footer ftco-bg-light ftco-section">

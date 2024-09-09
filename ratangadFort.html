@@ -441,7 +441,7 @@ function downloadPDF() {
         const pickupPointElement = document.getElementById('pickupPoint');
         const pickupPoint = pickupPointElement.options[pickupPointElement.selectedIndex].text;
         const trekkersNumber = parseInt(document.getElementById('trekkersNumber').value);
-        const pricePerPerson = 1799.00;
+        const pricePerPerson = 1599.00;
 
         // Calculate total payment
         const totalPayment = trekkersNumber * pricePerPerson;
@@ -458,7 +458,7 @@ function downloadPDF() {
         doc.text("Pune, Maharashtra 411044", 10, 20);
         doc.text("+91 95958 59508 | info@matoshreeholidaystoursandtravels.com", 10, 25);
 
-        // Add a logo - ensure the path is correct or convert to Base64 for better handling
+        // Add a logo 
         const logoPath = 'images/logo.png'; // Update this to a valid path
         doc.addImage(logoPath, 'PNG', 150, 10, 50, 30);
 
@@ -542,7 +542,7 @@ document.getElementById('bookingForm').addEventListener('submit', handleFormSubm
 
     <!-- To Downlod PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    
+
 <!-- END FORM  -->
 
 <footer class="ftco-footer ftco-bg-light ftco-section">

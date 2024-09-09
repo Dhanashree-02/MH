@@ -174,7 +174,7 @@
                 <section id="pickup-points" class="mt-5">
                     <h3>Pickup Points</h3>
                     <ul><li>Pune pickup: JM corner Shivajinagar </li>
-                      <li> Nashik Phata</li></ul>
+                      <li> wwNashik Phata</li></ul>
                 </section>
                 <!-- Button to Open the Modal -->
                   <div class="container mt-5 text-center">
@@ -200,7 +200,6 @@
 
      <!-- FOR OPEN A FORM -->
 
- <!-- Modal HTML -->
 
  <!-- Modal HTML -->
  <div class="modal fade" id="bookNowModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -281,165 +280,263 @@
 </div>
 
 
+
+
 <script>
   const pricePerTrekker = 1599;
 
-  function showStep2() {
-    if (validateStep1()) {
-      document.getElementById('step1').style.display = 'none';
-      document.getElementById('step2').style.display = 'block';
-      updateTotalPayment();
-    }
+function showStep2() {
+  if (validateStep1()) {
+    document.getElementById('step1').style.display = 'none';
+    document.getElementById('step2').style.display = 'block';
+    updateTotalPayment();
+  }
+}
+
+function updateTotalPayment() {
+  const trekkersNumber = document.getElementById('trekkersNumber').value;
+  const totalPayment = trekkersNumber * pricePerTrekker;
+  document.getElementById('totalPayment').value = `₹ ${totalPayment}/-`;
+}
+
+function validateStep1() {
+  let isValid = true;
+  clearErrors();
+
+  const fullName = document.getElementById('fullName').value.trim();
+  const mobileNumber = document.getElementById('mobileNumber').value.trim();
+  const emailAddress = document.getElementById('emailAddress').value.trim();
+
+  if (!/^[A-Za-z\s]+$/.test(fullName)) {
+    document.getElementById('fullNameError').innerText = "Please enter a valid full name (letters and spaces only).";
+    isValid = false;
   }
 
-  function updateTotalPayment() {
-    const trekkersNumber = document.getElementById('trekkersNumber').value;
-    const totalPayment = trekkersNumber * pricePerTrekker;
-    document.getElementById('totalPayment').value = `₹ ${totalPayment}/-`;
+  if (!/^\d{10}$/.test(mobileNumber)) {
+    document.getElementById('mobileNumberError').innerText = "Please enter a valid 10-digit mobile number.";
+    isValid = false;
   }
 
-  function validateStep1() {
-    let isValid = true;
-    clearErrors();
-
-    const fullName = document.getElementById('fullName').value.trim();
-    const mobileNumber = document.getElementById('mobileNumber').value.trim();
-    const emailAddress = document.getElementById('emailAddress').value.trim();
-
-    if (!/^[A-Za-z\s]+$/.test(fullName)) {
-      document.getElementById('fullNameError').innerText = "Please enter a valid full name (letters and spaces only).";
-      isValid = false;
-    }
-
-    if (!/^\d{10}$/.test(mobileNumber)) {
-      document.getElementById('mobileNumberError').innerText = "Please enter a valid 10-digit mobile number.";
-      isValid = false;
-    }
-
-    if (!/\S+@\S+\.\S+/.test(emailAddress)) {
-      document.getElementById('emailAddressError').innerText = "Please enter a valid email address.";
-      isValid = false;
-    }
-
-    return isValid;
+  if (!/\S+@\S+\.\S+/.test(emailAddress)) {
+    document.getElementById('emailAddressError').innerText = "Please enter a valid email address.";
+    isValid = false;
   }
 
-  function clearErrors() {
-    document.getElementById('fullNameError').innerText = "";
-    document.getElementById('mobileNumberError').innerText = "";
-    document.getElementById('emailAddressError').innerText = "";
-    document.getElementById('selectDateError').innerText = "";
-    document.getElementById('pickupPointError').innerText = "";
-    document.getElementById('trekkersNumberError').innerText = "";
-    document.getElementById('termsConditionsError').innerText = "";
+  return isValid;
+}
+
+function clearErrors() {
+  const errorFields = ['fullNameError', 'mobileNumberError', 'emailAddressError', 'selectDateError', 'pickupPointError', 'trekkersNumberError', 'termsConditionsError'];
+  errorFields.forEach(id => document.getElementById(id).innerText = "");
+}
+
+function validateForm() {
+  let isValid = true;
+  clearErrors();
+
+  const trekkersNumber = document.getElementById('trekkersNumber').value;
+  const termsConditions = document.getElementById('termsConditions').checked;
+
+  if (trekkersNumber < 1) {
+    document.getElementById('trekkersNumberError').innerText = "Please enter at least one trekker.";
+    isValid = false;
   }
 
-  function validateForm() {
-    let isValid = true;
-    clearErrors();
-
-    const trekkersNumber = document.getElementById('trekkersNumber').value;
-    const termsConditions = document.getElementById('termsConditions').checked;
-
-    if (trekkersNumber < 1) {
-      document.getElementById('trekkersNumberError').innerText = "Please enter at least one trekker.";
-      isValid = false;
-    }
-
-    if (!termsConditions) {
-      document.getElementById('termsConditionsError').innerText = "You must accept the terms and conditions to proceed.";
-      isValid = false;
-    }
-
-    return isValid;
+  if (!termsConditions) {
+    document.getElementById('termsConditionsError').innerText = "You must accept the terms and conditions to proceed.";
+    isValid = false;
   }
 
-  function handleFormSubmit(event) {
-    event.preventDefault();
+  return isValid;
+}
+
+function handleFormSubmit(event) {
+  event.preventDefault();
+  if (validateStep1() && validateForm()) {
+    const submitButton = document.querySelector('button[type="submit"]');
+    if (submitButton.disabled) return;
+
     const form = document.getElementById('bookingForm');
+    const formData = new FormData(form);
+    const pickupPointElement = document.getElementById('pickupPoint');
+    formData.append('pickupPoint', pickupPointElement.options[pickupPointElement.selectedIndex].text);
 
-    if (validateStep1() && validateForm()) {
-      const submitButton = document.querySelector('button[type="submit"]');
-      if (submitButton.disabled) {
-        return;
-      }
+    submitButton.disabled = true;
 
-      const formData = new FormData(form);
-      const pickupPointElement = document.getElementById('pickupPoint');
-      const pickupPoint = pickupPointElement.options[pickupPointElement.selectedIndex].text;
-      formData.append('pickupPoint', pickupPoint);
-
-      submitButton.disabled = true;
-
-      fetch(form.action, {
-        method: "POST",
-        body: formData,
+    fetch(form.action, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        alert(data.success ? "Email sent successfully!" : "Failed to send email. Please try again later.");
+        if (data.success) downloadPDF();
       })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success) {
-            alert("Email sent successfully!");
-            downloadPDF();
-          } else {
-            alert("Failed to send email. Please try again later.");
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-          alert("An error occurred. Please try again later.");
-        })
-        .finally(() => {
-          submitButton.disabled = false;
-        });
-    }
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("An error occurred to send Mail. Please try again later.");
+      })
+      .finally(() => {
+        submitButton.disabled = false;
+      });
   }
+}
+
+// Function to convert number to words
+function numberToWords(number) {
+    const ones = ["", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE"];
+    const teens = ["ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN", "SEVENTEEN", "EIGHTEEN", "NINETEEN"];
+    const tens = ["", "TEN", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY", "NINETY"];
+    const thousands = ["", "THOUSAND", "MILLION", "BILLION"];
+
+    if (number === 0) return "ZERO";
+
+    let word = '';
+    let numStr = number.toString();
+    let count = 0;
+
+    while (numStr.length > 0) {
+        let segment = parseInt(numStr.slice(-3), 10); // Use 'let' for reassignment
+        if (segment) {
+            let segmentWords = '';
+            if (segment > 99) {
+                segmentWords += ones[Math.floor(segment / 100)] + " HUNDRED ";
+                segment %= 100; 
+            }
+            if (segment > 10 && segment < 20) {
+                segmentWords += teens[segment - 11] + " ";
+            } else {
+                segmentWords += tens[Math.floor(segment / 10)] + " ";
+                segment %= 10; 
+                segmentWords += ones[segment] + " ";
+            }
+            word = segmentWords + thousands[count] + " " + word;
+        }
+        numStr = numStr.slice(0, -3);
+        count++;
+    }
+
+    return word.trim() + " ONLY";
+}
 
 
-
-  function downloadPDF() {
+// Function to download the PDF
+function downloadPDF() {
+    // Ensure jsPDF is correctly imported
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
-    // Get form data
-    const fullName = document.getElementById('fullName').value;
-    const mobileNumber = document.getElementById('mobileNumber').value;
-    const emailAddress = document.getElementById('emailAddress').value;
-    const selectDate = document.getElementById('selectDate').value;
-    const pickupPointElement = document.getElementById('pickupPoint');
-    const pickupPoint = pickupPointElement.options[pickupPointElement.selectedIndex].text;
-    const trekkersNumber = document.getElementById('trekkersNumber').value;
-    const totalPayment = document.getElementById('totalPayment').value;
+    try {
+        // Get form data
+        const fullName = document.getElementById('fullName').value;
+        const mobileNumber = document.getElementById('mobileNumber').value;
+        const emailAddress = document.getElementById('emailAddress').value;
+        const selectDate = document.getElementById('selectDate').value;
+        const pickupPointElement = document.getElementById('pickupPoint');
+        const pickupPoint = pickupPointElement.options[pickupPointElement.selectedIndex].text;
+        const trekkersNumber = parseInt(document.getElementById('trekkersNumber').value);
+        const pricePerPerson = 1799.00;
 
-    // Add content to PDF
-    doc.setFontSize(14);
-    doc.text("Booking Form Details", 10, 10);
-    doc.setFontSize(12);
-    doc.text(`Full Name: ${fullName}`, 10, 20);
-    doc.text(`Mobile Number: ${mobileNumber}`, 10, 30);
-    doc.text(`Email Address: ${emailAddress}`, 10, 40);
-    doc.text(`Date: ${selectDate}`, 10, 50);
-    doc.text(`Pickup Point: ${pickupPoint}`, 10, 60);
-    doc.text(`Number of Trekkers: ${trekkersNumber}`, 10, 70);
-    doc.text(`Total Payment: ${totalPayment}`, 10, 80);
+        // Calculate total payment
+        const totalPayment = trekkersNumber * pricePerPerson;
 
-    // Save the PDF
-    doc.save('BookingForm.pdf');
+        // Convert totalPayment to words
+        const totalPaymentWords = numberToWords(Math.round(totalPayment));
 
-    // Refresh the page after PDF download
-    setTimeout(() => {
-      window.location.reload(); // Refresh the page after a delay
-    }, 1000); // Delay to ensure the PDF is downloaded before the page reloads
-  }
+        // Add content to PDF
+        doc.setFontSize(14);
+        doc.setFont("helvetica", "bold");
+        doc.text("Mr. Swapnil", 10, 10);
+        doc.setFontSize(12);
+        doc.setFont("helvetica", "normal");
+        doc.text("Pune, Maharashtra 411044", 10, 20);
+        doc.text("+91 95958 59508 | info@matoshreeholidaystoursandtravels.com", 10, 25);
 
-  // Event listeners
-  document.getElementById('trekkersNumber').addEventListener('input', updateTotalPayment);
-  document.getElementById('bookingForm').addEventListener('submit', handleFormSubmit);
+        // Add a logo - ensure the path is correct or convert to Base64 for better handling
+        const logoPath = 'images/logo.png'; // Update this to a valid path
+        doc.addImage(logoPath, 'PNG', 150, 10, 50, 30);
+
+        // Right-aligned date
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "bold");
+        doc.text("Date: " + new Date().toLocaleDateString(), 180, 40, { align: 'right' });
+
+        doc.line(10, 63, 200, 63);
+
+        // Invoice Title
+        doc.setFontSize(16);
+        doc.text("INVOICE", 10, 50);
+
+        // Customer Details
+        doc.setFontSize(12);
+        doc.text("To,", 10, 85);
+        doc.text(fullName, 10, 90);
+        doc.text(emailAddress, 10, 95);
+        doc.text(mobileNumber, 10, 100);
+
+        // Add table-like structure
+        doc.setDrawColor(0);
+        doc.setFillColor(230, 230, 230);
+        doc.rect(10, 110, 190, 10, 'F');
+        doc.setFont("helvetica", "bold");
+        doc.text("Description", 12, 117);
+        doc.text("Date", 80, 117);
+        doc.text("Price", 120, 117);
+        doc.text("Trekkers", 150, 117);
+        doc.text("Amount", 180, 117, { align: 'right' });
+
+        // Add booking details
+        doc.setFont("helvetica", "normal");
+        doc.text("Devkund WaterFall", 12, 127);
+        doc.text(selectDate, 80, 127);
+        doc.text(pricePerPerson.toFixed(2), 120, 127);
+        doc.text(trekkersNumber.toString(), 160, 127);
+        doc.text(totalPayment.toFixed(2) + "/-", 180, 127, { align: 'right' });
+
+        doc.line(10, 130, 200, 130);
+
+        // Add Amount in words and Total
+        doc.setFont("helvetica", "bold");
+        doc.text("Amount in Words:", 12, 140);
+        doc.setFont("helvetica", "normal");
+        doc.text(totalPaymentWords, 50, 140);
+
+        doc.setFont("helvetica", "bold");
+        doc.text("Subtotal:  ", 160, 150, { align: 'right' });
+        doc.text(totalPayment.toFixed(2) + "/-", 180, 150, { align: 'right' });
+
+        // Footer Information
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal");
+        doc.text("For, Matoshree Holidays ", 150, 230);
+        doc.text("For any queries, please contact our customer support on +91 95958 59508 or email us at info@matoshreeholidaystoursandtravels.com", 10, 290);
+
+        // Save the PDF
+        doc.save('Invoice.pdf');
+
+        // Refresh the page after PDF download
+        setTimeout(() => {
+            window.location.reload();
+        }, 1000);
+
+    } catch (error) {
+        console.error("Error creating PDF:", error);
+        alert("An error occurred while generating the PDF. Please try again.");
+    }
+}
+
+
+
+// Event listeners
+document.getElementById('trekkersNumber').addEventListener('input', updateTotalPayment);
+document.getElementById('bookingForm').addEventListener('submit', handleFormSubmit);
 
 </script>
 
 
     <!-- To Downlod PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
 <!-- END FORM  -->
 
 <footer class="ftco-footer ftco-bg-light ftco-section">

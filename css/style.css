@@ -9399,3 +9399,13 @@ border-radius: 30px;
 padding: 5px;
 margin: 5px;
 }
+
+
+/* CSS for Hero Section */
+/* Add this to your existing CSS */
+.hero-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+

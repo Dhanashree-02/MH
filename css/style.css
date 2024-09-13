@@ -7790,10 +7790,11 @@ h1, h2, h3, h4, h5,
   .destination:hover .icon {
     opacity: 1; }
   .destination .text {
-    /* border-radius: 1px;  */
-    /* box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2); */
-    /* border-top: 1px solid transparent; */
-    /* background: whitesmoke; */
+    border: 1px solid #e6e6e6;
+    border-radius: 1px; 
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.2);
+    border-top: 1px solid transparent;
+    background: #fff;
    }
     .destination .text h3 {
       font-size: 18px;
@@ -9393,19 +9394,6 @@ textarea.form-control {
   transform: scale(1.1);
 }
 
-/* Trek page Cards */
-.destination{
-border-radius: 30px;
-padding: 5px;
-margin: 5px;
-}
 
-
-/* CSS for Hero Section */
-/* Add this to your existing CSS */
-.hero-wrap {
-  position: relative;
-  overflow: hidden;
-}
 
 
